@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import { Fav } from "./component/Fav";
+import { Navigationbar } from "./component/Navigationbar";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Add from "./component/Add";
+import { useSelector } from "react-redux";
+import { ListMovie } from './component/ListMovie'
 function App() {
+  const liste = useSelector((state) => state.liste)
+  const filterdname=useSelector(
+    (state)=>state.filterdname
+  )
+//console.log(filterdname)
+  //console.log(liste)
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navigationbar />
+      <Routes>
+<Route path='/list' element={<ListMovie movies={liste.filter((e)=>e.title.toLowerCase().includes(filterdname.toLowerCase()
+))}/>}/>
+<Route path="/" element={<Fav movies={liste.filter((e) => e.fav).filter((e)=>e.title.toLowerCase().includes(filterdname.toLowerCase()
+))} />} />
+        <Route path="/add" element={<Add/>} />
+      </Routes>
     </div>
   );
 }
